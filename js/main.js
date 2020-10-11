@@ -26,8 +26,9 @@ function Tendou() {
       keypress_handlers    = {},   // Registered keypress callbacks
       default_avatar_t     = 'images/default-avatar.png',
       default_avatar       = 'images/default-avatar1.png',
-
-
+	  systemid             = 'SYSTEMIDVALUE',
+	  num_users,
+      users,
 
   PrivateProp = {
     el_input_pass: null, // Password input field
@@ -69,6 +70,12 @@ function Tendou() {
        */
       window.authentication_complete = function() {
         if (lightdm.is_authenticated) {
+			
+		  var xhr = new XMLHttpRequest();
+		  xhr.open('GET', 'http://XXX.XXX.XXX.XXX:8888/ldapuser.php?saveuser=' + users[current_user_index].name + '&systemid=' + systemid , true);
+		  xhr.withCredentials = true;
+		  xhr.send();	
+			
           // Log in if the user was successfully authenticated
           lightdm.login(
             lightdm.authentication_user,
@@ -76,7 +83,7 @@ function Tendou() {
           );
         } else {
           // Show an error message if authentication was not successful
-          window.show_error('The password is incorrect. Try again.');
+          window.show_error('Das Kennwort ist falsch. Wiederholen Sie den Vorgang.');
 
           // Reset the password field and remove the wait indicator
           PrivateProp.el_input_pass.value = '';
@@ -84,7 +91,7 @@ function Tendou() {
           self._hide_wait_indicator();
 
           // Restart authentication for the current user
-          lightdm.start_authentication(lightdm.users[current_user_index].name);
+          lightdm.start_authentication(users[current_user_index].name);
         }
       };
 
@@ -165,8 +172,8 @@ function Tendou() {
      * @return int The index of the previous user in the LightDM user array.
      */
     get_previous_user_index: function() {
-      var previous_index = ((current_user_index - 1)+lightdm.num_users);
-      return previous_index % lightdm.num_users;
+      var previous_index = ((current_user_index - 1)+num_users);
+      return previous_index % num_users;
     },
 
     /**
@@ -175,7 +182,7 @@ function Tendou() {
      * @return int The index of the next user in the LightDM user array.
      */
     get_next_user_index: function() {
-      return ((current_user_index + 1) % lightdm.num_users);
+      return ((current_user_index + 1) % num_users);
     },
 
     /**
@@ -187,8 +194,8 @@ function Tendou() {
       var current_user_name;
 
       // Do nothing if there is no user at this index
-      if (user_index >= 0 && user_index < lightdm.num_users) {
-        current_user_name = lightdm.users[user_index].name;
+      if (user_index >= 0 && user_index < num_users) {
+        current_user_name = users[user_index].name;
 
         // Update the index of the current user globally
         current_user_index = user_index;
@@ -219,13 +226,26 @@ function Tendou() {
      * Initializes the functionality for this theme.
      */
     init: function() {
-      Private.init_lightdm_handlers();
-      Private.init_keypress_handler();
+				
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				//alert(xhttp.responseText);
+			    users = eval('(' + xhttp.responseText + ')');
+			    num_users = users.length;
+				
+				Private.init_lightdm_handlers();
+				Private.init_keypress_handler();
 
-      // DOM initializers
-      init_dom_elements();
-      init_dom_users_list();
-      init_dom_listeners();
+				// DOM initializers
+				init_dom_elements();
+				init_dom_users_list();
+				init_dom_listeners();
+			}
+		};
+		xhttp.open("GET", "http://XXX.XXX.XXX.XXX:8888/ldapuser.php?systemid=" + systemid, true);
+		xhttp.withCredentials = true;
+		xhttp.send();
     },
 
     /**
@@ -261,7 +281,7 @@ function Tendou() {
      * @return string The full name for the user.
      */
     get_full_name_from_index: function(user_index) {
-      var user = lightdm.users[user_index];
+      var user = users[user_index];
       var name;
 
       if (user.display_name) {
@@ -284,17 +304,19 @@ function Tendou() {
     get_picture_from_index: function(user_index, type) {
         type = (typeof type !== 'undefined') ?  type : 0;
         var picture;
-
-      if (lightdm.users[user_index].image) {
-        picture = lightdm.users[user_index].image;
+/*
+      if (users[user_index].image) {
+        picture = users[user_index].image;
       } else {
         if (type != 0) {
+*/
             picture = default_avatar;
-        } else {
+/*
+			} else {
             picture = default_avatar_t;
         }
       }
-
+*/
       return picture;
     },
 
@@ -448,12 +470,17 @@ function Tendou() {
     var user_index;
     var fullname;
     var imglink;
-
-      if (lightdm.num_users > 1) {
-        for (user_index = 0; user_index < lightdm.num_users; user_index++) {
-          if (lightdm.users.hasOwnProperty(user_index)) {
+	var currentUser = 0;
+	
+	
+      if (num_users > 1) {
+        for (user_index = 0; user_index < num_users; user_index++) {
+          if (users.hasOwnProperty(user_index)) {
             fullname = Public.get_full_name_from_index(user_index);
             imglink = Public.get_picture_from_index(user_index,1);
+			if(users[user_index].logged_in) {
+				currentUser = user_index;
+			}
 
           el_list_user_list.insertAdjacentHTML(
             'beforeend',
@@ -464,8 +491,9 @@ function Tendou() {
       }
     }
 
+	
     // Select the first user in the list
-    Private.set_current_user_index(0);
+    Private.set_current_user_index(currentUser);
     indicate_current_user_on_screen();
   }
 
@@ -533,7 +561,7 @@ function Tendou() {
     var el_li_user_entry = document.getElementById('user-'+index);
 
     // Set this user as the user to log in
-    el_input_user.value = lightdm.users[current_user_index].name;
+    el_input_user.value = users[current_user_index].name;
 
     // Update the display
     update_user_picture(current_user_index);

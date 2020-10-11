@@ -1,28 +1,18 @@
-# WARNING: THIS ONLY WORKS FOR 1366x768 NOW!
-## YOU NEED TO HAVE THE SEGOE UI FONT FROM A WINDOWS 10 INSTALLATION
-
 # Win10 for LightDM
 
-[![MIT License][license-badge]](LICENSE.md)
+Änderungen gegenüber Xseba360/lightdm-webkit-theme-win10:  
 
-A Windows 10 inspired theme for LightDM. [Try the demo](https://xseba360.github.io/lightdm-webkit-theme-win10/index.html) to see how you like it! Tendou isn't intended to look exactly like Windows 10, but you're free to fork and tweak the styles.
+* Übersetzung auf Deutsch
+* Unterstützung von anderen Auflösungen als 1366x768 
+* Entfernen unnötiger Symbole (Netzwerk, Bedienhilfen)
+* Liste der User wird von einer Web-API abgerufen
+* Zuletzt ausgewählter User wird über Web-API abgespeichert
+  
+  
+Folgendes muss vor Verwendung angepasst werden:  
 
-Tendou allows for switching users, but not graphical sessions. It also allows you to shutdown/restart/sleep from the menu in the bottom right.
-
-The code for the waiting indicator when logging in is based on [this pen](http://codepen.io/vineethtr/pen/GJpxoQ) by @vineethtrv.
-
-## The Future of Tendou
-
-This theme was originally written for personal use, but has gotten some attention lately. I'm in the process of rewriting and testing the JS to ensure reliability. The goal is to write a fully tested LightDM WebKit theme framework such that the developer only needs to provide their styles and HTML, and the framework will provide the functionality on top of that.
-
-## Contributing
-Found a bug? Want to add new functionality? Contributions are warmly welcomed! See [CONTRIBUTING.md](https://github.com/codehearts/lightdm-webkit-theme-tendou/blob/master/CONTRIBUTING.md) to learn how this project is set up and what the expectations are.
-
-[license-badge]:  https://img.shields.io/badge/license-MIT-007EC7.svg
-
-
-
-![Screenshot 1](https://i.imgur.com/pppZKhD.png)
-![Screenshot 2](https://i.imgur.com/qqDhs07.png)
-![Screenshot 3](https://i.imgur.com/ptpt5k0.png)
-![Screenshot 4](https://i.imgur.com/hTt4LfM.png)
+* Im Ordner 'font' muss 'SEGUISYM.TTF' abgelegt werden
+* In 'main.js' den String 'http://XXX.XXX.XXX.XXX:8888' durch den Host des Backend Systems ersetzen
+* Im Ordner 'php' befindet sich eine mögliche Implementierung für den Backend Service, in dieser die IP, Zugangsdaten zum LDAP Server und die Gruppe angeben.
+  
+Wenn der Login screen auf meherern Systemen zum einsatz kommen soll, muss in der 'main.js' der String 'SYSTEMIDVALUE' auf jedem system geändert werden.

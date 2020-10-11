@@ -24,27 +24,27 @@ body.onkeydown = function () {
     }
 };
 var weekday = new Array(7);
-weekday[0] =  "Sunday";
-weekday[1] = "Monday";
-weekday[2] = "Tuesday";
-weekday[3] = "Wednesday";
-weekday[4] = "Thursday";
-weekday[5] = "Friday";
-weekday[6] = "Saturday";
+weekday[0] = "Sonntag";
+weekday[1] = "Montag";
+weekday[2] = "Dienstag";
+weekday[3] = "Mittwoch";
+weekday[4] = "Donnerstag";
+weekday[5] = "Freitag";
+weekday[6] = "Samstag";
 
 var month = new Array(12);
-month[0] = "January";
-month[1] = "February";
-month[2] = "March";
+month[0] = "Januar";
+month[1] = "Februar";
+month[2] = "März";
 month[3] = "April";
-month[4] = "May";
-month[5] = "June";
-month[6] = "July";
+month[4] = "Mai";
+month[5] = "Juni";
+month[6] = "Juli";
 month[7] = "August";
 month[8] = "September";
-month[9] = "October";
+month[9] = "Oktober";
 month[10] = "November";
-month[11] = "December";
+month[11] = "Dezember";
 
 var clockLoop = setInterval(clockDo,1000);
 function clockDo() {

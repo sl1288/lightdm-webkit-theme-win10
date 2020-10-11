@@ -8,30 +8,35 @@
 }
 
 html {
-	width: 1366px;
-	height: 768px;
+	width: 100%;
+	height: 100%;
 	overflow: hidden;
     -webkit-user-select: none;
     user-select: none;
 	background-color: #000;
 }
 
+@font-face {
+  font-family: 'Segoe UI';
+  src: url("../font/SEGUISYM.TTF") format("truetype");
+}
+
 body {
 	background-color: #000;
 	background: url('../images/img100.jpg') no-repeat left top fixed;
-	background-size: 1366px 768px;
+	background-size: 100% 100%;
 	font-family: 'Segoe UI', sans-serif;
 	font-weight: 100;
 	color: #99a;
-	width: 1366px;
-	height: 768px;
+	width: 100%;
+	height: 100%;
 	overflow: hidden;
 	margin: 0;
 	transition: 0.3s all ease-out 0.2s;
 }
 
 body.layer2 {
-	background-size: 1398px 786px;
+	background-size:  calc(100vw + 32px) calc(100vh + 18px);
 	background-position: -16px -9px;
 }
 
@@ -82,7 +87,7 @@ input:focus {
 
 .clock {
 	position: absolute;
-	top: 442px;
+	bottom: 255px;
 
 	font-size: 96pt;
 	z-index: 100;
@@ -96,7 +101,7 @@ input:focus {
 
 .date {
 	position: absolute;
-	top: 597px;
+	bottom: 200px;
 	font-size: 42pt;
 	left: 36px;
 }
@@ -105,8 +110,8 @@ input:focus {
 	transition: 0.2s opacity ease-in-out;
 	transition-delay: 0.5s;
 	background-color: rgba(0,0,0,0.3);
-	width: 1366px;
-	height: 768px;
+	width: 100%;
+	height: 100%;
 	position: absolute;
 	opacity: 0;
 }
@@ -165,7 +170,7 @@ body.layer2 > #layer2 {
 	float: right;
 	border-left: none;
 	color: white;
-	background: rgba(255,255,255,0.25);
+	background: rgba(111,99,77,0.75);
 	font-size: 15pt;
 
 }
@@ -241,7 +246,7 @@ body.layer2 > #layer2 {
 	padding: 0;
 	position: absolute;
 	left: 1.5em;
-	top: 572px;
+	bottom: 25px;
 }
 
 
@@ -280,8 +285,8 @@ body.layer2 > #layer2 {
 	margin: 0;
 	padding: 0;
 	position: absolute;
-	top: 698px;
-	left: 1294px;
+	bottom: 20px;
+	right: 20px;
 }
 
 #power-button:focus > #power-menu {
@@ -322,15 +327,15 @@ body.layer2 > #layer2 {
 	pointer-events: none;
 	bottom: 24px;
 	opacity: 0;
-    border: 1px solid #767676;
+    border: 1px solid #000000;
 	margin: 0;
     padding: 8px 0;
 	list-style: none;
 	position: absolute;
 	background: #2b2b2b;
 	font-size: 16px;
-    width: 98px;
-    left: -26px;
+    width: 135px;
+    left: -68px;
 }
 
 #power-menu > li {
@@ -399,8 +404,8 @@ body.layer2 > #layer2 {
 		opacity: 1;
 	}
 	100% {
-		-webkit-transform: translateY(-768px);
-		transform: translateY(-768px);
+		-webkit-transform: translateY(-100%);
+		transform: translateY(-100%);
 		opacity: 0;
 	}
 }
@@ -412,8 +417,8 @@ body.layer2 > #layer2 {
 		opacity: 1;
 	}
 	100% {
-		-webkit-transform: translateY(-768px);
-		transform: translateY(-768px);
+		-webkit-transform: translateY(-100%);
+		transform: translateY(-100%);
 		opacity: 0;
 	}
 }
@@ -431,7 +436,7 @@ body.layer2 > #layer2 {
 }
 
 .spinner-w10:before {
-    content: 'Welcome';
+    content: 'Willkommen';
     color: #fff;
     font-size: 24px;
     margin-left: 40px;
